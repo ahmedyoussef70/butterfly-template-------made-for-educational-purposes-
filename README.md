@@ -7,7 +7,7 @@ Is a clean, simple and powerful template language that uses javascript strings t
 CDN:
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.0/umd/index.min.js" />
+<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.0/umd/index.min.js"></script>
 ```
 
 ## Examples
