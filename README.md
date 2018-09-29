@@ -9,6 +9,11 @@ CDN:
 ```javascript
 <script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.0/umd/index.min.js"></script>
 ```
+Node:
+
+```
+npm i butterfly-template
+```
 
 ## Examples
 
