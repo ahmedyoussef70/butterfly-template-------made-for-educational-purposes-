@@ -119,7 +119,7 @@ The Lexer will throw erros with helpful details about the problem. for example:
 
 - Catching invalid tags/characters and pointing at the line number, index number, the character itself
   and injecting the html body with a simple visualization of the error highlighted in red.
-  ![example of error handling](https://i.imgur.com/POMJzwE.png)
+  ![example of error handling](https://i.imgur.com/gAhtLO9.png)
 
 ## How it works ?
 
