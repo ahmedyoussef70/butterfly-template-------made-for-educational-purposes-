@@ -1,0 +1,32 @@
+{
+  "name": "butterfly-template",
+  "version": "1.0.0",
+  "description": "Build DOM Nodes From JavaScript Strings",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:umd.min": "webpack --output-filename index.min.js -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedyoussef70/butterfly-template.git"
+  },
+  "keywords": [
+    "template",
+    "vdom",
+    "dom"
+  ],
+  "author": "Ahmed Youssef <ahmedyoussef7000@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahmedyoussef70/butterfly-template/issues"
+  },
+  "homepage": "https://github.com/ahmedyoussef70/butterfly-template#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
+  }
+}
