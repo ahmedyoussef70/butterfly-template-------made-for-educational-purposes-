@@ -127,6 +127,27 @@ The Lexer will throw erros with helpful details about the problem. for example:
   and injecting the html body with a simple visualization of the error highlighted in red.
   ![example of error handling](https://i.imgur.com/gAhtLO9.png)
 
+
+
+## How to get Virtual nodes instead of DOM nodes ?
+```javascript
+const {Lexer, VNT} = butterflyTemplate
+new VNT().build(new Lexer().lex('div [ h1 [ "hello" ] ]'))
+
+outputs: /*
+{
+  rawValue: "div",
+  attrs: null,
+  children: [{…}],
+  startIndex: 0,
+  endIndex: 2,
+  lineNumber: 1,
+  parentToken: null,
+  parsingMode: ƒ TAG_MODE(t)
+}
+*/
+```
+
 ## How it works ?
 
 butterfly-template has a built in Parser, that consists of:
