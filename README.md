@@ -1,6 +1,6 @@
 ## butterfly-template
 
-Is a clean, simple and powerful template language that uses javascript strings to build DOM nodes (~5.8k minified).
+Is a clean, simple and powerful template language that uses javascript strings to build `DOM nodes or Virtual Nodes` (~5.8k minified).
 
 ## Get Started
 
