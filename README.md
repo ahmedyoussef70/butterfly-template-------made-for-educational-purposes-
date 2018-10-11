@@ -7,7 +7,7 @@ Is a clean, simple and powerful template language that uses javascript strings t
 CDN:
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.1/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.3/umd/index.min.js"></script>
 <script>
   const { templateToDOM } = butterflyTemplate
 </script>
