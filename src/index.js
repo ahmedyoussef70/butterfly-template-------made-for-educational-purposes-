@@ -138,37 +138,7 @@ class Lexer {
     while (this.parsingMode === ATTRS_MODE) {
       let ch = this.text[this.index]
       if (ch != null) {
-        if (this.tagR1.test(ch) || (LHS.length && this.tagR2.test(ch))) {
-          if (!expectingLHS) {
-            this.vizError(index, this.index + 3)
-            throw new Error(
-              `Attrs Values must have quotes: line ${this.currentLineNumber}, index ${this.index}, char ${
-                this.text[this.index]
-              }, text ${this.text.slice(index, this.index + 3)}...`
-            )
-          }
-          LHS += ch
-          this.index += 1
-        } else if (ch === '=') {
-          expectingRHS = true
-          expectingLHS = false
-          this.index += 1
-        } else if (ch === "'" || ch === '"') {
-          if (!expectingRHS) {
-            this.vizError(index, this.index + 3)
-            throw new Error(
-              `Attrs keys must not have quotes: line ${this.currentLineNumber}, index ${this.index}, char ${
-                this.text[this.index]
-              }, text ${this.text.slice(index, this.index + 3)}...`
-            )
-          }
-          this.parsingMode = TEXT_MODE
-          let token = this.readText(ch)
-          RHS = token.rawValue
-          expectingRHS = false
-          expectingLHS = true
-          this.parsingMode = ATTRS_MODE
-        } else if (this.whiteSpaceR.test(ch)) {
+        if (this.whiteSpaceR.test(ch)) {
           if (ch === '\n') this.currentLineNumber += 1
           this.index += 1
         } else if (ch === ',' || ch === ')') {
@@ -184,14 +154,42 @@ class Lexer {
             this.parsingMode = LHS = RHS = attrs = null
             return token
           }
-        } else {
-          this.vizError(index, this.index + 3)
-          throw new Error(
-            `Unknown char: line ${this.currentLineNumber}, index ${this.index}, char ${
-              this.text[this.index]
-            }, text ${this.text.slice(index, this.index + 3)}...`
-          )
+        } else if (expectingLHS) {
+          if (this.tagR1.test(ch) || (LHS.length && this.tagR2.test(ch))) {
+            LHS += ch
+            this.index += 1
+          } else if (ch === '=') {
+            expectingRHS = true
+            expectingLHS = false
+            this.index += 1
+          } else {
+            this.vizError(this.index, this.index + 1)
+            throw new Error(
+              `Unknown char: line ${this.currentLineNumber}, index ${this.index}, char ${this.text[this.index]}`
+            )
+          }
+        } else if (expectingRHS) {
+          if (ch === "'" || ch === '"') {
+            this.parsingMode = TEXT_MODE
+            let token = this.readText(ch)
+            RHS = token.rawValue
+            expectingRHS = false
+            expectingLHS = true
+            this.parsingMode = ATTRS_MODE
+          } else {
+            this.vizError(this.index, this.index + 1)
+            throw new Error(
+              `Unknown char: line ${this.currentLineNumber}, index ${this.index}, char ${this.text[this.index]}`
+            )
+          }
         }
+      } else {
+        this.vizError(index, this.index)
+        throw new Error(
+          `Missing a closing parenthesis: ${
+            this.componentName ? 'Component ' + this.componentName + ',' : ''
+          } text ${this.text.slice(index, this.index)}`
+        )
       }
     }
   }
@@ -210,8 +208,8 @@ class Lexer {
     return token
   }
   vizError(start, end) {
-    let body = document.querySelector('body')
-    if (body) {
+    let body
+    if (typeof document === 'object' && (body = document.querySelector('body'))) {
       let error = `<pre>${this.text.slice(0, start)}<b style="color:orangered">${this.text.slice(start, end)}</b></pre>`
       body.innerHTML = error
     }
