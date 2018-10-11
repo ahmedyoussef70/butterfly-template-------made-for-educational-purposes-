@@ -1,6 +1,6 @@
 {
   "name": "butterfly-template",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Build DOM Nodes From JavaScript Strings",
   "main": "src/index.js",
   "scripts": {
