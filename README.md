@@ -7,16 +7,18 @@ Is a clean, simple and powerful template language that uses javascript strings t
 CDN:
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.3/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ahmedyoussef70/butterfly-template@1.0.4/umd/index.min.js"></script>
 <script>
   const { templateToDOM } = butterflyTemplate
 </script>
 ```
+
 Node:
 
 ```
 npm i butterfly-template
 ```
+
 ```javascript
 const { templateToDOM } = require('butterfly-template')
 ```
@@ -127,9 +129,8 @@ The Lexer will throw erros with helpful details about the problem. for example:
   and injecting the html body with a simple visualization of the error highlighted in red.
   ![example of error handling](https://i.imgur.com/gAhtLO9.png)
 
-
-
 ## How to get Virtual nodes instead of DOM nodes ?
+
 ```javascript
 const {Lexer, VNT} = butterflyTemplate
 new VNT().build(new Lexer().lex('div [ h1 [ "hello" ] ]'))
