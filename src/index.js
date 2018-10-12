@@ -133,12 +133,14 @@ class Lexer {
     let RHS = ''
     let expectingLHS = true
     let expectingRHS = false
+    let expectingComma = false
     let index = this.index + 1
     this.index += 1
     while (this.parsingMode === ATTRS_MODE) {
       let ch = this.text[this.index]
       if (ch != null) {
         if (this.whiteSpaceR.test(ch)) {
+          if (LHS) expectingComma = true
           if (ch === '\n') this.currentLineNumber += 1
           this.index += 1
         } else if (ch === ',' || ch === ')') {
@@ -148,6 +150,7 @@ class Lexer {
           LHS = RHS = ''
           expectingRHS = false
           expectingLHS = true
+          expectingComma = false
           this.index += 1
           if (ch === ')') {
             let token = this.makeToken(attrs, index)
@@ -156,16 +159,27 @@ class Lexer {
           }
         } else if (expectingLHS) {
           if (this.tagR1.test(ch) || (LHS.length && this.tagR2.test(ch))) {
+            if (expectingComma) {
+              this.vizError(index, this.index)
+              throw new Error(
+                `Missing a comma: ${
+                  this.componentName ? 'Component -> ' + this.componentName + ',' : ''
+                } text -> ${this.text.slice(index, this.index)}`
+              )
+            }
             LHS += ch
             this.index += 1
           } else if (ch === '=') {
             expectingRHS = true
             expectingLHS = false
+            expectingComma = false
             this.index += 1
           } else {
             this.vizError(this.index, this.index + 1)
             throw new Error(
-              `Unknown char: line ${this.currentLineNumber}, index ${this.index}, char ${this.text[this.index]}`
+              `Attr keys must not have quotes or invalid chars: line -> ${this.currentLineNumber}, index -> ${
+                this.index
+              }, char -> ${this.text[this.index]}`
             )
           }
         } else if (expectingRHS) {
@@ -174,14 +188,24 @@ class Lexer {
             let token = this.readText(ch)
             RHS = token.rawValue
             expectingRHS = false
-            expectingLHS = true
+            expectingLHS = false
+            expectingComma = true
             this.parsingMode = ATTRS_MODE
           } else {
             this.vizError(this.index, this.index + 1)
             throw new Error(
-              `Unknown char: line ${this.currentLineNumber}, index ${this.index}, char ${this.text[this.index]}`
+              `Attr values must have quotes: line -> ${this.currentLineNumber}, index -> ${this.index}, char -> ${
+                this.text[this.index]
+              }`
             )
           }
+        } else if (expectingComma) {
+          this.vizError(index, this.index)
+          throw new Error(
+            `Missing a comma: ${
+              this.componentName ? 'Component -> ' + this.componentName + ',' : ''
+            } text -> ${this.text.slice(index, this.index)}`
+          )
         }
       } else {
         this.vizError(index, this.index)
